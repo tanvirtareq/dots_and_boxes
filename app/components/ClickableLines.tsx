@@ -7,14 +7,19 @@ interface ClickableLinesProps {
     size: number;
     rad: number;
     gap: number;
+    turn: "red" | "green";
+    setTurn: (turn: "red" | "green") => void;
 }
 
-const ClickableLines: React.FC<ClickableLinesProps> = ({ size, rad, gap }) => {
+const ClickableLines: React.FC<ClickableLinesProps> = ({ size, rad, gap, turn, setTurn }) => {
     const [clickedLines, setClickedLines] = useState<Set<string>>(new Set());
     const strokeWidth = 10;
 
     const handleLineClick = (key: string) => {
-        setClickedLines((prev) => new Set(prev).add(key));
+        if (!clickedLines.has(key)) {
+            setClickedLines((prev) => new Set(prev).add(key));
+            setTurn(turn === "red" ? "green" : "red");
+        }
     };
 
     const lines = Array.from({ length: size }, (_, i) =>
@@ -64,3 +69,4 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({ size, rad, gap }) => {
 };
 
 export default ClickableLines;
+
