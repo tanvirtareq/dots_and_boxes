@@ -9,9 +9,25 @@ interface ClickableLinesProps {
     gap: number;
     turn: "red" | "green";
     setTurn: (turn: "red" | "green") => void;
+    redScore: number;
+    setRedScore: (score: number) => void;
+    greenScore: number;
+    setGreenScore: (score: number) => void;
+    setWinner: (winner: string | null) => void;
 }
 
-const ClickableLines: React.FC<ClickableLinesProps> = ({ size, rad, gap, turn, setTurn }) => {
+const ClickableLines: React.FC<ClickableLinesProps> = ({
+    size,
+    rad,
+    gap,
+    turn,
+    setTurn,
+    redScore,
+    setRedScore,
+    greenScore,
+    setGreenScore,
+    setWinner
+}) => {
     const [clickedLines, setClickedLines] = useState<Set<string>>(new Set());
     const [completedBoxes, setCompletedBoxes] = useState<Set<string>>(new Set());
     const strokeWidth = 10;
@@ -25,8 +41,18 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({ size, rad, gap, turn, s
             const boxes = checkForCompletedBoxes(newClickedLines, i, j, isHorizontal, turn);
             if (boxes.length > 0) {
                 setCompletedBoxes(prev => new Set([...prev, ...boxes]));
+                if (turn === "red") {
+                    setRedScore(redScore + boxes.length);
+                } else {
+                    setGreenScore(greenScore + boxes.length);
+                }
             } else {
                 setTurn(turn === "red" ? "green" : "red");
+            }
+
+            if (newClickedLines.size === 2 * size * (size - 1)) {
+                setWinner(redScore > greenScore ? "Red" : "Green");
+                setTurn(redScore > greenScore ? "red" : "green");
             }
         }
     };
@@ -133,3 +159,4 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({ size, rad, gap, turn, s
 };
 
 export default ClickableLines;
+

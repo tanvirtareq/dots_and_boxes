@@ -21,3 +21,35 @@ body {
   padding: 0;
   margin: 0;
 }
+
+/* globals.css */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin: 20ox;
+}
+
+.turn-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+  .app-container {
+    padding: 10px;
+  }
+
+  .turn-indicator {
+    flex-direction: column;
+  }
+
+  .turn-indicator div {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+}
