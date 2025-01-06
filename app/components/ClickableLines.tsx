@@ -110,7 +110,14 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({
                             ]}
                             stroke={clickedLines.has(horizontalKey) ? "black" : "grey"}
                             strokeWidth={strokeWidth}
-                            onClick={() => handleLineClick(horizontalKey, i, j, true)}
+                            onClick={(event) => {
+                                event.evt.preventDefault();
+                                handleLineClick(horizontalKey, i, j, true);
+                            }}
+                            onTap={(event) => {
+                                event.evt.preventDefault();
+                                handleLineClick(horizontalKey, i, j, true);
+                            }}
                             onMouseEnter={() => (document.body.style.cursor = "pointer")}
                             onMouseLeave={() => (document.body.style.cursor = "default")}
                         />
@@ -126,7 +133,14 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({
                             ]}
                             stroke={clickedLines.has(verticalKey) ? "black" : "grey"}
                             strokeWidth={strokeWidth}
-                            onClick={() => handleLineClick(verticalKey, i, j, false)}
+                            onClick={(event) => {
+                                event.evt.preventDefault();
+                                handleLineClick(verticalKey, i, j, false);
+                            }}
+                            onTap={(event) => {
+                                event.evt.preventDefault();
+                                handleLineClick(verticalKey, i, j, false);
+                            }}
                             onMouseEnter={() => (document.body.style.cursor = "pointer")}
                             onMouseLeave={() => (document.body.style.cursor = "default")}
                         />
