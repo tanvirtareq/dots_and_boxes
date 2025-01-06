@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Line } from "react-konva";
+import { Line, Rect } from "react-konva";
 
 interface ClickableLinesProps {
     size: number;
@@ -13,13 +13,58 @@ interface ClickableLinesProps {
 
 const ClickableLines: React.FC<ClickableLinesProps> = ({ size, rad, gap, turn, setTurn }) => {
     const [clickedLines, setClickedLines] = useState<Set<string>>(new Set());
+    const [completedBoxes, setCompletedBoxes] = useState<Set<string>>(new Set());
     const strokeWidth = 10;
 
-    const handleLineClick = (key: string) => {
+    const handleLineClick = (key: string, i: number, j: number, isHorizontal: boolean) => {
         if (!clickedLines.has(key)) {
-            setClickedLines((prev) => new Set(prev).add(key));
-            setTurn(turn === "red" ? "green" : "red");
+            const newClickedLines = new Set(clickedLines).add(key);
+            setClickedLines(newClickedLines);
+
+            // Check for completed boxes
+            const boxes = checkForCompletedBoxes(newClickedLines, i, j, isHorizontal, turn);
+            if (boxes.length > 0) {
+                setCompletedBoxes(prev => new Set([...prev, ...boxes]));
+            } else {
+                setTurn(turn === "red" ? "green" : "red");
+            }
         }
+    };
+
+    const checkForCompletedBoxes = (lines: Set<string>, i: number, j: number, isHorizontal: boolean, turn: "red" | "green") => {
+        const boxes: string[] = [];
+        const checkBox = (x: number, y: number) => {
+            const top = `h-${x}-${y}`;
+            const bottom = `h-${x}-${y + 1}`;
+            const left = `v-${x}-${y}`;
+            const right = `v-${x + 1}-${y}`;
+            if (lines.has(top) && lines.has(bottom) && lines.has(left) && lines.has(right)) {
+                return `${x}-${y}-${turn}`;
+            }
+            return null;
+        };
+
+        if (isHorizontal) {
+            if (j > 0) {
+                const box = checkBox(i, j - 1);
+                if (box) boxes.push(box);
+            }
+            if (j < size - 1) {
+                const box = checkBox(i, j);
+                if (box) boxes.push(box);
+            }
+        } else {
+            if (i > 0) {
+                const box = checkBox(i - 1, j);
+                if (box) boxes.push(box);
+            }
+            if (i < size - 1) {
+                const box = checkBox(i, j);
+                if (box) boxes.push(box);
+            }
+        }
+
+        return boxes;
     };
 
     const lines = Array.from({ length: size }, (_, i) =>
@@ -39,7 +84,7 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({ size, rad, gap, turn, s
                             ]}
                             stroke={clickedLines.has(horizontalKey) ? "black" : "grey"}
                             strokeWidth={strokeWidth}
-                            onClick={() => handleLineClick(horizontalKey)}
+                            onClick={() => handleLineClick(horizontalKey, i, j, true)}
                             onMouseEnter={() => (document.body.style.cursor = "pointer")}
                             onMouseLeave={() => (document.body.style.cursor = "default")}
                         />
@@ -55,7 +100,7 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({ size, rad, gap, turn, s
                             ]}
                             stroke={clickedLines.has(verticalKey) ? "black" : "grey"}
                             strokeWidth={strokeWidth}
-                            onClick={() => handleLineClick(verticalKey)}
+                            onClick={() => handleLineClick(verticalKey, i, j, false)}
                             onMouseEnter={() => (document.body.style.cursor = "pointer")}
                             onMouseLeave={() => (document.body.style.cursor = "default")}
                         />
@@ -65,8 +110,26 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({ size, rad, gap, turn, s
         })
     );
 
-    return <>{lines.flat()}</>;
+    const boxes = Array.from(completedBoxes).map(key => {
+        const [x, y, boxWinner] = key.split('-');
+        return (
+            <Rect
+                key={key}
+                x={parseInt(x) * gap + 2 * rad + strokeWidth / 2}
+                y={parseInt(y) * gap + 2 * rad + strokeWidth / 2}
+                width={gap - strokeWidth}
+                height={gap - strokeWidth}
+                fill={boxWinner}
+            />
+        );
+    });
+
+    return (
+        <>
+            {lines.flat()}
+            {boxes}
+        </>
+    );
 };
 
 export default ClickableLines;
-
