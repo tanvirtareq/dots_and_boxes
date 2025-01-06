@@ -1,9 +1,18 @@
-import DotsAndBoxes from "./DotsAndBoxes"
+import DotsAndBoxes from "./DotsAndBoxes";
+
 export default function GameBoard() {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-white">
+    <div
+      style={{
+        backgroundColor: "white",
+        height: "500px",
+        width: "500px",
+        padding: "20px",
+        borderRadius: "5%",
+        display: "flex",
+      }}
+    >
       <DotsAndBoxes />
     </div>
   );
 }
-

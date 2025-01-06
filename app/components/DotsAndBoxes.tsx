@@ -119,10 +119,10 @@ const DotsAndBoxes: React.FC = () => {
 
   const renderLines = () => {
     return lines.map((line, index) => {
-      const x1 = line.p1.x * 40;
-      const y1 = line.p1.y * 40;
-      const x2 = line.p2.x * 40;
-      const y2 = line.p2.y * 40;
+      const x1 = line.p1.x * 80;
+      const y1 = line.p1.y * 80;
+      const x2 = line.p2.x * 80;
+      const y2 = line.p2.y * 80;
       const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
       const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
 
