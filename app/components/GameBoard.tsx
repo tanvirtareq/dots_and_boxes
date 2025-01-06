@@ -1,4 +1,11 @@
-import DotsAndBoxes from "./DotsAndBoxes";
+"use client"
+import { Stage, Layer} from "react-konva";
+import  Dots from "./Dots";
+import ClickableLines from "./ClickableLines";
+
+const size: number = 8;
+const gap: number = 60;
+const rad: number = 10;
 
 export default function GameBoard() {
   return (
@@ -12,7 +19,13 @@ export default function GameBoard() {
         display: "flex",
       }}
     >
-      <DotsAndBoxes />
+
+      <Stage width={500} height={500}>
+        <Layer>
+          <ClickableLines size={size} gap={gap} rad={rad}/>
+          <Dots size={size} gap={gap} rad={rad}/>
+        </Layer>
+      </Stage>
     </div>
   );
 }
