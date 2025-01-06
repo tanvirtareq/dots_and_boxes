@@ -3,9 +3,9 @@ import { Stage, Layer} from "react-konva";
 import  Dots from "./Dots";
 import ClickableLines from "./ClickableLines";
 
-const size: number = 8;
-const gap: number = 50;
-const rad: number = 10;
+const size: number = 6;
+const gap: number = 65;
+const rad: number = 15;
 
 export default function GameBoard({
   turn,

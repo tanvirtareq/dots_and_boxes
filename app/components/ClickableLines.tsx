@@ -30,7 +30,7 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({
 }) => {
     const [clickedLines, setClickedLines] = useState<Set<string>>(new Set());
     const [completedBoxes, setCompletedBoxes] = useState<Set<string>>(new Set());
-    const strokeWidth = 10;
+    const strokeWidth = 15;
 
     const handleLineClick = (key: string, i: number, j: number, isHorizontal: boolean) => {
         if (!clickedLines.has(key)) {
