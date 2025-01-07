@@ -31,6 +31,7 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({
     const [clickedLines, setClickedLines] = useState<Set<string>>(new Set());
     const [completedBoxes, setCompletedBoxes] = useState<Set<string>>(new Set());
     const strokeWidth = 15;
+    const hitStrokeWidth = strokeWidth*3;
 
     const handleLineClick = (key: string, i: number, j: number, isHorizontal: boolean) => {
         if (!clickedLines.has(key)) {
@@ -110,6 +111,7 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({
                             ]}
                             stroke={clickedLines.has(horizontalKey) ? "black" : "grey"}
                             strokeWidth={strokeWidth}
+                            hitStrokeWidth={hitStrokeWidth}
                             onClick={(event) => {
                                 event.evt.preventDefault();
                                 handleLineClick(horizontalKey, i, j, true);
@@ -133,6 +135,7 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({
                             ]}
                             stroke={clickedLines.has(verticalKey) ? "black" : "grey"}
                             strokeWidth={strokeWidth}
+                            hitStrokeWidth={hitStrokeWidth}
                             onClick={(event) => {
                                 event.evt.preventDefault();
                                 handleLineClick(verticalKey, i, j, false);
@@ -173,4 +176,3 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({
 };
 
 export default ClickableLines;
-
