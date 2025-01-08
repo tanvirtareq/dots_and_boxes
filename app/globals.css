@@ -22,34 +22,34 @@ body {
   margin: 0;
 }
 
-/* globals.css */
 .app-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  margin: 20ox;
+  padding: 3%;
+  margin: 20px;
+  height: 90vh; /* Set height to be the same as the viewport */
 }
+
 
 .turn-indicator {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  margin: 3%;
+  max-width: 100%;
+  width: 400px;
+  padding: 3%;
+  border-radius: 10px;
+  flex-direction: column;
 }
 
-@media only screen and (max-width: 768px) {
-  .app-container {
-    padding: 10px;
-  }
-
-  .turn-indicator {
-    flex-direction: column;
-  }
-
-  .turn-indicator div {
-    width: 100px;
-    height: 100px;
-    margin-bottom: 10px;
-  }
+.game-board {
+  background-color: white;
+  height: 400px;
+  width: 400px;
+  padding: 5px;
+  margin: 5%;
+  border-radius: 10px;
+  display: flex;
 }

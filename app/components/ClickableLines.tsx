@@ -2,18 +2,19 @@
 
 import React, { useState } from "react";
 import { Line, Rect } from "react-konva";
+import { Player, Winner } from "../page";
 
 interface ClickableLinesProps {
     size: number;
     rad: number;
     gap: number;
-    turn: "red" | "green";
-    setTurn: (turn: "red" | "green") => void;
+    turn: Player;
+    setTurn: (turn: Player) => void;
     redScore: number;
     setRedScore: (score: number) => void;
     greenScore: number;
     setGreenScore: (score: number) => void;
-    setWinner: (winner: string | null) => void;
+    setWinner: (winner: Winner) => void;
 }
 
 const ClickableLines: React.FC<ClickableLinesProps> = ({
@@ -38,28 +39,35 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({
             const newClickedLines = new Set(clickedLines).add(key);
             setClickedLines(newClickedLines);
 
-            // Check for completed boxes
             const boxes = checkForCompletedBoxes(newClickedLines, i, j, isHorizontal, turn);
-            if (boxes.length > 0) {
-                setCompletedBoxes(prev => new Set([...prev, ...boxes]));
-                if (turn === "red") {
-                    setRedScore(redScore + boxes.length);
-                } else {
-                    setGreenScore(greenScore + boxes.length);
-                }
-            } else {
-                setTurn(turn === "red" ? "green" : "red");
-            }
+            handleCompletedBoxes(boxes, turn);
 
             if (newClickedLines.size === 2 * size * (size - 1)) {
-                setWinner(redScore > greenScore ? "Red" : "Green");
-                setTurn(redScore > greenScore ? "red" : "green");
+                determineWinner();
             }
         }
     };
 
-    const checkForCompletedBoxes = (lines: Set<string>, i: number, j: number, isHorizontal: boolean, turn: "red" | "green") => {
+    const handleCompletedBoxes = (boxes: string[], turn: Player) => {
+        if (boxes.length > 0) {
+            setCompletedBoxes(prev => new Set([...prev, ...boxes]));
+            if (turn === "red") {
+                setRedScore(redScore + boxes.length);
+            } else {
+                setGreenScore(greenScore + boxes.length);
+            }
+        } else {
+            setTurn(turn === "red" ? "green" : "red");
+        }
+    };
+
+    const determineWinner = () => {
+        setWinner(redScore > greenScore ? "red" : redScore < greenScore ? "green" : "tie");
+    };
+
+    const checkForCompletedBoxes = (lines: Set<string>, i: number, j: number, isHorizontal: boolean, turn: Player) => {
         const boxes: string[] = [];
+
         const checkBox = (x: number, y: number) => {
             const top = `h-${x}-${y}`;
             const bottom = `h-${x}-${y + 1}`;
@@ -71,24 +79,17 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({
             return null;
         };
 
+        const addBoxIfCompleted = (i: number, j: number) => {
+            const box = checkBox(i, j);
+            if (box) boxes.push(box);
+        };
+
         if (isHorizontal) {
-            if (j > 0) {
-                const box = checkBox(i, j - 1);
-                if (box) boxes.push(box);
-            }
-            if (j < size - 1) {
-                const box = checkBox(i, j);
-                if (box) boxes.push(box);
-            }
+            if (j > 0) addBoxIfCompleted(i, j - 1);
+            if (j < size - 1) addBoxIfCompleted(i, j);
         } else {
-            if (i > 0) {
-                const box = checkBox(i - 1, j);
-                if (box) boxes.push(box);
-            }
-            if (i < size - 1) {
-                const box = checkBox(i, j);
-                if (box) boxes.push(box);
-            }
+            if (i > 0) addBoxIfCompleted(i - 1, j);
+            if (i < size - 1) addBoxIfCompleted(i, j);
         }
 
         return boxes;
@@ -153,19 +154,21 @@ const ClickableLines: React.FC<ClickableLinesProps> = ({
         })
     );
 
-    const boxes = Array.from(completedBoxes).map(key => {
-        const [x, y, boxWinner] = key.split('-');
-        return (
-            <Rect
-                key={key}
-                x={parseInt(x) * gap + 2 * rad + strokeWidth / 2}
-                y={parseInt(y) * gap + 2 * rad + strokeWidth / 2}
-                width={gap - strokeWidth}
-                height={gap - strokeWidth}
-                fill={boxWinner}
-            />
-        );
-    });
+    const boxes = React.useMemo(() => {
+        return Array.from(completedBoxes).map(key => {
+            const [x, y, boxWinner] = key.split('-');
+            return (
+                <Rect
+                    key={key}
+                    x={parseInt(x) * gap + 2 * rad + strokeWidth / 2}
+                    y={parseInt(y) * gap + 2 * rad + strokeWidth / 2}
+                    width={gap - strokeWidth}
+                    height={gap - strokeWidth}
+                    fill={boxWinner}
+                />
+            );
+        });
+    }, [completedBoxes, gap, rad, strokeWidth]);
 
     return (
         <>

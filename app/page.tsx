@@ -1,43 +1,41 @@
-// page.tsx
 "use client";
+
 import React, { useState } from 'react';
 import GameBoard from './components/GameBoard';
+import { capitalize } from './utils/utils';
+
+export type Player = "red" | "green";
+export type Winner = Player | "tie" | null;
 
 function App() {
-  const [turn, setTurn] = useState<'red' | 'green'>('red');
+  const [turn, setTurn] = useState<Player>('red');
   const [redScore, setRedScore] = useState(0);
   const [greenScore, setGreenScore] = useState(0);
-  const [winner, setWinner] = useState<string | null>(null);
+  const [winner, setWinner] = useState<Winner>(null);
 
   return (
     <div className="app-container">
-      <div className="turn-indicator">
-        <div
-          style={{
-            width: '300px',
-            height: '200px',
-            backgroundColor: turn === 'red' ? 'red' : 'green',
-            marginRight: '20px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: '10%',
-            flexDirection: 'column'
-          }}
-        >
-          {winner ? (
-            <>
-              <p>Game Over</p>
-              <p>Winner: {winner}</p>
-            </>
-          ) : (
-            <>
-              {turn === 'red' ? 'Red Turn' : 'Green Turn'}
-            </>
-          )}
-              <p>Red Score: {redScore}</p>
-              <p>Green Score: {greenScore}</p>
-        </div>
+      <div className="turn-indicator"
+        style={{
+          backgroundColor: winner ? (winner === "tie" ? "black" : winner) : turn,
+        }}
+      >
+        {winner ? (
+          <>
+            <p>Game Over</p>
+            {winner === "tie" ? (
+              <p>Draw</p>
+            ) : (
+              <p>Winner: {capitalize(winner)}</p>
+            )}
+          </>
+        ) : (
+          <p>
+            {capitalize(turn)} Turn
+          </p>
+        )}
+        <p>Red Score: {redScore}</p>
+        <p>Green Score: {greenScore}</p>
       </div>
       <GameBoard
         turn={turn}

@@ -1,11 +1,12 @@
 "use client"
-import { Stage, Layer} from "react-konva";
+import { Stage, Layer } from "react-konva";
 import  Dots from "./Dots";
 import ClickableLines from "./ClickableLines";
+import { Player, Winner } from "../page";
 
-const size: number = 6;
-const gap: number = 65;
-const rad: number = 15;
+const size = 6;
+const gap = 65;
+const rad = 15;
 
 export default function GameBoard({
   turn,
@@ -16,26 +17,16 @@ export default function GameBoard({
   setGreenScore,
   setWinner
 }: {
-  turn: "red" | "green",
-  setTurn: (turn: "red" | "green") => void,
+  turn: Player,
+  setTurn: (turn: Player) => void,
   redScore: number,
   setRedScore: (redScore: number) => void,
   greenScore: number,
   setGreenScore: (greenScore: number) => void,
-  setWinner: (winner: string | null) => void
+  setWinner: (winner: Winner) => void
 }) {
   return (
-    <div
-      style={{
-        backgroundColor: "white",
-        height: "400px",
-        width: "400px",
-        padding: "5px",
-        borderRadius: "5%",
-        display: "flex",
-      }}
-    >
-
+    <div className="game-board">
       <Stage width={400} height={400}>
         <Layer>
           <ClickableLines
