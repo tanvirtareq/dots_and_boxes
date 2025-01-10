@@ -1,17 +1,25 @@
 import React from 'react';
 import { LineProps } from '../utils/utils';
 import { Line } from 'react-konva';
+import { Player } from '../page';
 
 interface ClickableLineProps {
     line: LineProps;
     rad: number;
     gap: number;
+    turn: Player;
     handleLineClick: (line: LineProps) => void;
 }
 
-const ClickableLine: React.FC<ClickableLineProps> = ({ line, gap, rad, handleLineClick }) => {
+const ClickableLine: React.FC<ClickableLineProps> = ({ line, gap, rad, turn, handleLineClick }) => {
     const strokeWidth = 15;
     const hitStrokeWidth = strokeWidth*3;
+
+    const handleClick = () => {
+        if (turn === "green") return;
+
+        handleLineClick(line);
+    };
 
     return (
         <Line
@@ -25,15 +33,9 @@ const ClickableLine: React.FC<ClickableLineProps> = ({ line, gap, rad, handleLin
             stroke={line.isClicked ? "black" : "grey"}
             strokeWidth={strokeWidth}
             hitStrokeWidth={hitStrokeWidth}
-            onClick={(event) => {
-                event.evt.preventDefault();
-                handleLineClick(line);
-            }}
-            onTap={(event) => {
-                event.evt.preventDefault();
-                handleLineClick(line);
-            }}
-            onMouseEnter={() => (document.body.style.cursor = "pointer")}
+            onClick={handleClick}
+            onTap={handleClick}
+            onMouseEnter={() => (document.body.style.cursor = turn === "red" ? "pointer" : "default")}
             onMouseLeave={() => (document.body.style.cursor = "default")}
         />
     );

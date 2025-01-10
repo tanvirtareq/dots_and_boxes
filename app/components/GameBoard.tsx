@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import Dots from "./Dots";
 import ClickableLines from "./ClickableLines";
 import Boxes from "./Boxes";
+import { computerMove } from "../game/GameLogic";
 
 const size = 6;
 const gap = 65;
@@ -94,6 +95,12 @@ export default function GameBoard({
     setBoxMap(newBoxMap);
   }, [lineMap]);
 
+  useEffect(() => {
+    if (turn === "green") {
+      computerMove(boxMap, lineMap, handleLineClick);
+    }
+  }, [lineMap]);
+
   const handleLineClick = (line: LineProps) => {
     const newLine = {
       ...line,
@@ -144,6 +151,7 @@ export default function GameBoard({
             gap={gap}
             rad={rad}
             lineMap={lineMap}
+            turn={turn}
             handleLineClick={handleLineClick}
           />
           <Dots
