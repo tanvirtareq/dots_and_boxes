@@ -32,7 +32,7 @@ const ClickableLine: React.FC<ClickableLineProps> = ({ line, gap, rad, turn, han
             ]}
             stroke={line.isClicked ? "black" : "grey"}
             strokeWidth={strokeWidth}
-            hitStrokeWidth={hitStrokeWidth}
+            hitStrokeWidth={!line.isClicked ? hitStrokeWidth : 0}
             onClick={handleClick}
             onTap={handleClick}
             onMouseEnter={() => (document.body.style.cursor = turn === "red" ? "pointer" : "default")}
