@@ -40,9 +40,7 @@ function App() {
       <GameBoard
         turn={turn}
         setTurn={setTurn}
-        redScore={redScore}
         setRedScore={setRedScore}
-        greenScore={greenScore}
         setGreenScore={setGreenScore}
         setWinner={setWinner}
       />
