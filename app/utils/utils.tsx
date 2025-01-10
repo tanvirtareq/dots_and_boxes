@@ -30,6 +30,10 @@ export function capitalize(turn: string): React.ReactNode {
   return turn.charAt(0).toUpperCase() + turn.slice(1);
 }
 
+export function getAdjecentLine(point: PointProps, lineMap: Map<string, LineProps>): LineProps[] {
+  return Array.from(lineMap.values()).filter((line) => line.isClicked == false && (line.p1.key === point.key || line.p2.key === point.key));
+}
+
 /**
  * @param {LineProps} line - The line to check
  * @param {Map<string, BoxProps>} boxMap - The map of boxes
@@ -50,6 +54,19 @@ export function isBoxMake(
     }
     return false;
   });
+}
+
+export function getAllPoints(size: number): Map<string, PointProps> {
+  const points: Map<string, PointProps> = new Map();
+
+  for (let i = 0; i < size; i++) {
+    for (let j = 0; j < size; j++) {
+      const key = `${i}-${j}`;
+      points.set(key, { key: key, x: i, y: j });
+    }
+  }
+
+  return points;
 }
 
 export function getAllLines(size: number): Map<string, LineProps> {

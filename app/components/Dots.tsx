@@ -1,20 +1,25 @@
 import { Circle } from "react-konva";
 import React from "react";
+import { PointProps } from "../utils/utils";
 
-const Dots: React.FC<{ size: number, gap: number, rad: number }> = ({ size, gap, rad }) => {
-    const dots = React.useMemo(() => {
-        const dotsArray = [];
-        for (let i = 0; i < size; i++) {
-            for (let j = 0; j < size; j++) {
-                dotsArray.push(<Circle key={`${i}-${j}`} x={i * gap+2*rad} y={j * gap+2*rad} radius={rad} fill="black" />);
-            }
-        }
-        return dotsArray;
-    }, [size, gap, rad]);
-    return (
-        <>{dots}</>
-    );
+const Dots: React.FC<{
+  pointMap: Map<string, PointProps>;
+  gap: number;
+  rad: number;
+  handlePointClick: (point: PointProps) => void;
+}> = ({ pointMap, gap, rad, handlePointClick }) => {
+
+  return Array.from(pointMap.values()).map((point: PointProps) => (
+    <Circle
+      key={point.key}
+      x={point.x * gap + 2 * rad}
+      y={point.y * gap + 2 * rad}
+      radius={rad}
+      fill="black"
+      onClick={() => handlePointClick(point)}
+      onTap={() => handlePointClick(point)}
+    />
+  ));
 };
 
 export default Dots;
-
