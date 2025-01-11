@@ -17,7 +17,7 @@ const ClickableLine: React.FC<ClickableLineProps> = ({ line, gap, rad, turn, han
     const hitStrokeWidth = strokeWidth*3;
 
     const handleClick = () => {
-        if (turn === "green") return;
+        if (turn === "Player 2") return;
 
         handleLineClick(line);
     };
@@ -36,7 +36,7 @@ const ClickableLine: React.FC<ClickableLineProps> = ({ line, gap, rad, turn, han
             hitStrokeWidth={!line.isClicked ? hitStrokeWidth : 0}
             onClick={handleClick}
             onTap={handleClick}
-            onMouseEnter={() => (document.body.style.cursor = turn === "red" ? "pointer" : "default")}
+            onMouseEnter={() => (document.body.style.cursor = turn === "Player 1" ? "pointer" : "default")}
             onMouseLeave={() => (document.body.style.cursor = "default")}
         />
     );

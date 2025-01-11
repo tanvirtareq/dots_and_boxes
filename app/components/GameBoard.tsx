@@ -24,14 +24,14 @@ const rad = 15;
 export default function GameBoard({
   turn,
   setTurn,
-  setRedScore,
-  setGreenScore,
+  setPlayer1Score,
+  setPlayer2Score,
   setWinner,
 }: {
   turn: Player;
   setTurn: (turn: Player) => void;
-  setRedScore: (redScore: number) => void;
-  setGreenScore: (greenScore: number) => void;
+  setPlayer1Score: (player1Score: number) => void;
+  setPlayer2Score: (player2Score: number) => void;
   setWinner: (winner: Winner) => void;
 }) {
   const [lineMap, setLineMap] = useState<Map<string, LineProps>>(() =>
@@ -45,23 +45,23 @@ export default function GameBoard({
   const pointMap = getAllPoints(size);
 
   useEffect(() => {
-    const newRedScore = Array.from(boxMap.values()).filter(
-      (box) => box.winner === "red"
+    const newPlayer1Score = Array.from(boxMap.values()).filter(
+      (box) => box.winner === "Player 1"
     ).length;
-    const newGreenScore = Array.from(boxMap.values()).filter(
-      (box) => box.winner === "green"
+    const newPlayer2Score = Array.from(boxMap.values()).filter(
+      (box) => box.winner === "Player 2"
     ).length;
-    setRedScore(newRedScore);
-    setGreenScore(newGreenScore);
+    setPlayer1Score(newPlayer1Score);
+    setPlayer2Score(newPlayer2Score);
 
     const allBoxesCompleted = Array.from(boxMap.values()).every(
       (box) => box.isCompleted
     );
     if (allBoxesCompleted) {
-      if (newRedScore > newGreenScore) {
-        setWinner("red");
-      } else if (newGreenScore > newRedScore) {
-        setWinner("green");
+      if (newPlayer1Score > newPlayer2Score) {
+        setWinner("Player 1");
+      } else if (newPlayer2Score > newPlayer1Score) {
+        setWinner("Player 2");
       } else {
         setWinner("tie");
       }
@@ -96,7 +96,7 @@ export default function GameBoard({
   }, [lineMap]);
 
   useEffect(() => {
-    if (turn === "green") {
+    if (turn === "Player 2") {
       computerMove(boxMap, lineMap, handleLineClick);
     }
   }, [lineMap]);
@@ -114,7 +114,7 @@ export default function GameBoard({
         return new Map(prev);
       });
       if (!isBoxMake(line, boxMap, lineMap)) {
-        setTurn(turn === "red" ? "green" : "red");
+        setTurn(turn === "Player 1" ? "Player 2" : "Player 1");
       }
     }
   };
