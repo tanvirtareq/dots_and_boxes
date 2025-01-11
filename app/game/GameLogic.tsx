@@ -22,11 +22,11 @@ export function computerMove(
         .flatMap((box) => [box.lineTop, box.lineBottom, box.lineLeft, box.lineRight].filter((line) => !lineMap.get(line.key)?.isClicked))
         .map((line) => line.key);
   
-    const unclickedLineKeys = Array.from(lineMap.values()).filter((line) => !lineMap.get(line.key)?.isClicked && !riskyLineKeys.includes(line.key))
+    const unclickedLineKeys = Array.from(lineMap.values()).filter((line) => !line?.isClicked && !riskyLineKeys.includes(line.key))
         .map((line) => line.key);
 
     if (unclickedLineKeys.length > 0) {
-        const line = lineMap.get(unclickedLineKeys[Math.floor(Math.random() * riskyLineKeys.length)]);
+        const line = lineMap.get(unclickedLineKeys[Math.floor(Math.random() * unclickedLineKeys.length)]);
         if (line) {
             handleLineClick(line);
             return;
