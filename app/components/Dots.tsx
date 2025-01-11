@@ -1,6 +1,7 @@
 import { Circle } from "react-konva";
 import React from "react";
 import { PointProps } from "../utils/utils";
+import { getDotColor } from "../utils/ColorUtils";
 
 const Dots: React.FC<{
   pointMap: Map<string, PointProps>;
@@ -15,7 +16,7 @@ const Dots: React.FC<{
       x={point.x * gap + 2 * rad}
       y={point.y * gap + 2 * rad}
       radius={rad}
-      fill="black"
+      fill={getDotColor()}
       onClick={() => handlePointClick(point)}
       onTap={() => handlePointClick(point)}
     />

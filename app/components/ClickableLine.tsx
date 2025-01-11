@@ -2,6 +2,7 @@ import React from 'react';
 import { LineProps } from '../utils/utils';
 import { Line } from 'react-konva';
 import { Player } from '../page';
+import { getLineColor } from '../utils/ColorUtils';
 
 interface ClickableLineProps {
     line: LineProps;
@@ -30,7 +31,7 @@ const ClickableLine: React.FC<ClickableLineProps> = ({ line, gap, rad, turn, han
                 line.p2.x * gap + 2 * rad,
                 line.p2.y * gap + 2 * rad,
             ]}
-            stroke={line.isClicked ? "black" : "grey"}
+            stroke={getLineColor(line)}
             strokeWidth={strokeWidth}
             hitStrokeWidth={!line.isClicked ? hitStrokeWidth : 0}
             onClick={handleClick}
