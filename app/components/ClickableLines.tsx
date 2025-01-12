@@ -3,7 +3,7 @@
 import React from "react";
 import ClickableLine from "./ClickableLine";
 import { LineProps } from "../utils/utils";
-import { Player } from "../page";
+import { Player } from "./game";
 
 interface ClickableLinesProps {
     rad: number;

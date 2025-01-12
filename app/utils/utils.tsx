@@ -1,4 +1,4 @@
-import { Winner } from "../page";
+import { Winner } from "../components/game";
 
 export interface PointProps {
   key: string; // 'x-y' format

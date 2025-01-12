@@ -1,6 +1,5 @@
 "use client";
 import { Stage, Layer } from "react-konva";
-import { Player, Winner } from "../page";
 import {
   BoxProps,
   getAllPoints,
@@ -15,7 +14,9 @@ import { useState, useEffect } from "react";
 import Dots from "./Dots";
 import ClickableLines from "./ClickableLines";
 import Boxes from "./Boxes";
-import { computerMove } from "../game/GameLogic";
+import { computerMoveLevel1, computerMoveLevel2 } from "../game/GameLogic";
+import { Level } from "./LevelSelector";
+import { Player, Winner } from "./game";
 
 const size = 6;
 const gap = 65;
@@ -27,12 +28,14 @@ export default function GameBoard({
   setPlayer1Score,
   setPlayer2Score,
   setWinner,
+  level,
 }: {
   turn: Player;
   setTurn: (turn: Player) => void;
   setPlayer1Score: (player1Score: number) => void;
   setPlayer2Score: (player2Score: number) => void;
   setWinner: (winner: Winner) => void;
+  level: Level;
 }) {
   const [lineMap, setLineMap] = useState<Map<string, LineProps>>(() =>
     getAllLines(size)
@@ -96,8 +99,13 @@ export default function GameBoard({
   }, [lineMap]);
 
   useEffect(() => {
+    
     if (turn === "Player 2") {
-      computerMove(boxMap, lineMap, handleLineClick);
+      if (level === "Level 1") {
+        computerMoveLevel1(boxMap, lineMap, handleLineClick);
+      } else if(level === "Level 2") {
+        computerMoveLevel2(boxMap, lineMap, handleLineClick);
+      }
     }
   }, [lineMap]);
 

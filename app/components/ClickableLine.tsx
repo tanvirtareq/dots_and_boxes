@@ -1,8 +1,8 @@
 import React from 'react';
 import { LineProps } from '../utils/utils';
 import { Line } from 'react-konva';
-import { Player } from '../page';
 import { getLineColor } from '../utils/ColorUtils';
+import { Player } from './game';
 
 interface ClickableLineProps {
     line: LineProps;

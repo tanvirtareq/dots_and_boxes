@@ -1,4 +1,4 @@
-import { Player, Winner } from "../page";
+import { Player, Winner } from "../components/game";
 import { BoxProps, LineProps } from "./utils";
 
 const player1Color = "red";
