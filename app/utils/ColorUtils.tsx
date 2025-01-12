@@ -10,7 +10,7 @@ const boxColorForPlayer2 = "#32CD32";
 const lineColorForPlayer1 = "#960000";
 const lineColorForPlayer2 = "green";
 
-const dotColor = "#000302";
+const dotColor = "#A1AEB1";
 
 export function getBoxColor(box: BoxProps) {
     if (box.isCompleted) {
@@ -23,7 +23,7 @@ export function getLineColor(line: LineProps) {
     if (line.isClicked) {
         return line.clickedBy === "Player 1" ? lineColorForPlayer1 : lineColorForPlayer2;
     }
-    return "grey";
+    return "#f7d9bc";
 }
 
 export function getDotColor() {
