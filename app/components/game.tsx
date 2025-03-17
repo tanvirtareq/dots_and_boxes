@@ -11,9 +11,10 @@ export type Winner = Player | "tie" | null;
 
 interface GameProps {
   level: Level;
+  resetGame: () => void;
 }
 
-const Game: React.FC<GameProps> = ({ level }) => {
+const Game: React.FC<GameProps> = ({ level, resetGame }) => {
 
   const [turn, setTurn] = useState<Player>('Player 1');
   const [player1Score, setPlayer1Score] = useState(0);
@@ -43,6 +44,7 @@ const Game: React.FC<GameProps> = ({ level }) => {
         )}
         <p>Player 1 Score: {player1Score}</p>
         <p>Player 2 Score: {player2Score}</p>
+        <button className='button' onClick={resetGame}>Reset Game</button>
       </div>
       <GameBoard
         turn={turn}
