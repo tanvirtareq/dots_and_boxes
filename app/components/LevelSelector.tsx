@@ -18,7 +18,7 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({ setLevel }) => {
         <div className='level-selector'>
             <h2>Select Level</h2>
             {levelList.map((level, index) => (
-                <button className='level-button' key={index} style={levelStyle}
+                <button className='button' key={index} style={levelStyle}
                     onClick={() => setLevel(level)}
                 >
                     {level}
