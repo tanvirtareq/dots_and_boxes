@@ -75,7 +75,7 @@ body {
   background-color: green;
 }
 
-.level-button {
+.button {
   background-color: #f0f0f0;
   color: #000000;
   border: none;
@@ -90,6 +90,6 @@ body {
   transition: background-color 0.3s ease;
 }
 
-.level-button:hover {
+.button:hover {
   background-color: #e0e0e0;
 }
