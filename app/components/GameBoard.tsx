@@ -15,9 +15,9 @@ import Dots from "./Dots";
 import ClickableLines from "./ClickableLines";
 import Boxes from "./Boxes";
 import { computerMoveLevel1, computerMoveLevel2 } from "../game/GameLogic";
-import { Level } from "./LevelSelector";
 import { Player, Winner } from "./game";
 import useStorage from "../hooks/useStorage";
+import { GameConfig } from "../page";
 
 const size = 6;
 const gap = 65;
@@ -29,17 +29,18 @@ export default function GameBoard({
   setPlayer1Score,
   setPlayer2Score,
   setWinner,
-  level,
+  gameConfig,
 }: {
   turn: Player;
   setTurn: (turn: Player) => void;
   setPlayer1Score: (player1Score: number) => void;
   setPlayer2Score: (player2Score: number) => void;
   setWinner: (winner: Winner) => void;
-  level: Level;
+  gameConfig: GameConfig;
 }) {
-  const [lineMap, setLineMap] = useStorage<Map<string, LineProps>>("lineMap", () =>
-    getAllLines(size)
+  const [lineMap, setLineMap] = useStorage<Map<string, LineProps>>(
+    "lineMap",
+    () => getAllLines(size)
   );
 
   const [boxMap, setBoxMap] = useStorage<Map<string, BoxProps>>("boxMap", () =>
@@ -70,7 +71,7 @@ export default function GameBoard({
         setWinner("tie");
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [boxMap]);
 
   useEffect(() => {
@@ -97,19 +98,18 @@ export default function GameBoard({
     });
 
     setBoxMap(newBoxMap);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lineMap]);
 
   useEffect(() => {
-    
-    if (turn === "Player 2") {
-      if (level === "Level 1") {
+    if (turn === "Player 2" && gameConfig.gameMode === "Player vs Computer") {
+      if (gameConfig.level === "Level 1") {
         computerMoveLevel1(boxMap, lineMap, handleLineClick);
-      } else if(level === "Level 2") {
+      } else if (gameConfig.level === "Level 2") {
         computerMoveLevel2(boxMap, lineMap, handleLineClick);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lineMap]);
 
   const handleLineClick = (line: LineProps) => {
@@ -163,6 +163,7 @@ export default function GameBoard({
             rad={rad}
             lineMap={lineMap}
             turn={turn}
+            gameConfig={gameConfig}
             handleLineClick={handleLineClick}
           />
           <Dots

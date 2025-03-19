@@ -3,21 +3,23 @@ import { LineProps } from '../utils/utils';
 import { Line } from 'react-konva';
 import { getLineColor } from '../utils/ColorUtils';
 import { Player } from './game';
+import { GameConfig } from '../page';
 
 interface ClickableLineProps {
     line: LineProps;
     rad: number;
     gap: number;
     turn: Player;
+    gameConfig: GameConfig; 
     handleLineClick: (line: LineProps) => void;
 }
 
-const ClickableLine: React.FC<ClickableLineProps> = ({ line, gap, rad, turn, handleLineClick }) => {
+const ClickableLine: React.FC<ClickableLineProps> = ({ line, gap, rad, turn, gameConfig, handleLineClick }) => {
     const strokeWidth = 15;
     const hitStrokeWidth = strokeWidth*3;
 
     const handleClick = () => {
-        if (turn === "Player 2") return;
+        if (turn === "Player 2" && gameConfig.gameMode === "Player vs Computer") return;
 
         handleLineClick(line);
     };
