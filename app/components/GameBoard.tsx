@@ -10,13 +10,14 @@ import {
   isBoxMake,
   getAdjecentLine,
 } from "../utils/utils";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Dots from "./Dots";
 import ClickableLines from "./ClickableLines";
 import Boxes from "./Boxes";
 import { computerMoveLevel1, computerMoveLevel2 } from "../game/GameLogic";
 import { Level } from "./LevelSelector";
 import { Player, Winner } from "./game";
+import useStorage from "../hooks/useStorage";
 
 const size = 6;
 const gap = 65;
@@ -37,11 +38,11 @@ export default function GameBoard({
   setWinner: (winner: Winner) => void;
   level: Level;
 }) {
-  const [lineMap, setLineMap] = useState<Map<string, LineProps>>(() =>
+  const [lineMap, setLineMap] = useStorage<Map<string, LineProps>>("lineMap", () =>
     getAllLines(size)
   );
 
-  const [boxMap, setBoxMap] = useState<Map<string, BoxProps>>(() =>
+  const [boxMap, setBoxMap] = useStorage<Map<string, BoxProps>>("boxMap", () =>
     getAllBoxes(size)
   );
 
@@ -69,6 +70,7 @@ export default function GameBoard({
         setWinner("tie");
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [boxMap]);
 
   useEffect(() => {
@@ -78,9 +80,8 @@ export default function GameBoard({
       if (box.isCompleted) {
         return;
       }
-
       const lines = [box.lineTop, box.lineBottom, box.lineLeft, box.lineRight]
-        .map((l) => lineMap.get(l.key))
+        .map((l) => lineMap?.get(l.key))
         .filter((l): l is LineProps => l !== undefined);
 
       if (lines.every((l) => l?.isClicked)) {
@@ -96,6 +97,7 @@ export default function GameBoard({
     });
 
     setBoxMap(newBoxMap);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lineMap]);
 
   useEffect(() => {
@@ -107,6 +109,7 @@ export default function GameBoard({
         computerMoveLevel2(boxMap, lineMap, handleLineClick);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lineMap]);
 
   const handleLineClick = (line: LineProps) => {
