@@ -34,10 +34,11 @@ async def get_best_move(state: GameState):
     Receive board state from frontend and return best move.
     """
     bestMove = randomUnclickedLine(state.lines)
-    print(state.lines)
-    return {"best_move": bestMove.key}
+    return {"best_move": bestMove}
 
 def randomUnclickedLine(lines: List[Line]):
     for line in lines:
         if not line.isClicked:
-            return line
+            return line.key
+
+    return None

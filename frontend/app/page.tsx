@@ -4,7 +4,7 @@ import Game from "./components/game";
 import useStorage from "./hooks/useStorage";
 import Selector from "./components/Selector";
 
-const levelList = ["Level 1", "Level 2"];
+const levelList = ["Level 1", "Level 2", "Level 3"];
 const gameModeList = ["Player vs Player", "Player vs Computer"];
 
 export type Level = (typeof levelList)[number];
