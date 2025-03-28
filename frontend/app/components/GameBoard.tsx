@@ -103,6 +103,32 @@ export default function GameBoard({
 
   useEffect(() => {
     if (turn === "Player 2" && gameConfig.gameMode === "Player vs Computer") {
+      const linesArray = Array.from(lineMap.values()).map(line => ({
+        key: line.key,
+        p1: line.p1,
+        p2: line.p2,
+        orientation: line.orientation,
+        isClicked: line.isClicked,
+      }));
+      const result = { lines: linesArray };
+
+      // Convert to JSON
+      const jsonString = JSON.stringify(result, null, 2);
+
+      console.log(jsonString);
+
+      console.log(lineMap);
+        fetch("http://localhost:8000/get-move/", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: jsonString,
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      })
       if (gameConfig.level === "Level 1") {
         computerMoveLevel1(boxMap, lineMap, handleLineClick);
       } else if (gameConfig.level === "Level 2") {
