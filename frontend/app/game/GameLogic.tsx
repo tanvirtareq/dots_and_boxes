@@ -126,8 +126,6 @@ export function computerMoveLevel3(
 ) {
   const jsonString = prepareLineData(lineMap);
 
-  console.log(jsonString);
-
   makeNetworkRequest(jsonString)
     .then((data) => handleResponse(data, lineMap, handleLineClick))
     .catch((error) => console.error("Error during network request:", error));
