@@ -4,7 +4,6 @@ from datetime import datetime
 
 from .Point import Point
 from .Orientation import Orientation
-from .Player import Player
 
 # Define the Line model
 class Line(BaseModel):
@@ -12,6 +11,4 @@ class Line(BaseModel):
     p1: Point
     p2: Point
     orientation: Orientation 
-    isClicked: Optional[bool] = False
-    clickedBy: Optional[Player] = None  # The user who clicked the line, if applicable
-    clicked_at: Optional[datetime] = None  # None indicates the line has not been clicked
+    isClicked: bool = False

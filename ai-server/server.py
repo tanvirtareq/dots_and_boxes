@@ -1,22 +1,26 @@
+import os
 from typing import List
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv  # Import dotenv
 
 from model.Line import Line
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Create the FastAPI app instance
 app = FastAPI()
 
-# Add CORS middleware to allow requests from localhost:3000
+# Add CORS middleware to allow requests from specified origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Allows only your frontend
+    allow_origins=os.getenv("ALLOWED_ORIGINS").split(","),
     allow_credentials=True,
     allow_methods=["*"],  # Allows all HTTP methods (GET, POST, etc.)
     allow_headers=["*"],  # Allows all headers
 )
-
 
 # Define a GameState model (list of LineProps)
 class GameState(BaseModel):
@@ -25,7 +29,6 @@ class GameState(BaseModel):
 # Define the root route
 @app.get("/")
 def read_root():
-    print("Hello, World!")
     return {"message": "Hello, World!"}
 
 @app.post("/get-move/")
@@ -37,8 +40,5 @@ async def get_best_move(state: GameState):
     return {"best_move": bestMove}
 
 def randomUnclickedLine(lines: List[Line]):
-    for line in lines:
-        if not line.isClicked:
-            return line.key
-
-    return None
+    unclicked_line = next((line.key for line in lines if not line.isClicked), None)
+    return unclicked_line

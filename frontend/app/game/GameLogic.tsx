@@ -126,6 +126,8 @@ export function computerMoveLevel3(
 ) {
   const jsonString = prepareLineData(lineMap);
 
+  console.log(jsonString);
+
   makeNetworkRequest(jsonString)
     .then((data) => handleResponse(data, lineMap, handleLineClick))
     .catch((error) => console.error("Error during network request:", error));
@@ -145,7 +147,11 @@ function prepareLineData(lineMap: Map<string, LineProps>): string {
   return JSON.stringify(result);
 }
 
-async function makeNetworkRequest(jsonString: string): Promise<any> {
+type NetworkResponse = {
+  best_move: string;
+};
+
+async function makeNetworkRequest(jsonString: string): Promise<NetworkResponse> {
   const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   if (!apiUrl) {
@@ -177,7 +183,7 @@ async function makeNetworkRequest(jsonString: string): Promise<any> {
 }
 
 function handleResponse(
-  data: any,
+  data: NetworkResponse,
   lineMap: Map<string, LineProps>,
   handleLineClick: (line: LineProps) => void
 ) {
