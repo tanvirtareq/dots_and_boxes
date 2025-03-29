@@ -1,10 +1,9 @@
 import os
-from typing import List
 from fastapi import FastAPI
-from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv  # Import dotenv
-
+from typing import List
+from model.GameState import GameState
 from model.Line import Line
 
 # Load environment variables from .env file
@@ -21,15 +20,6 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all HTTP methods (GET, POST, etc.)
     allow_headers=["*"],  # Allows all headers
 )
-
-# Define a GameState model (list of LineProps)
-class GameState(BaseModel):
-    lines: List[Line]
-
-# Define the root route
-@app.get("/")
-def read_root():
-    return {"message": "Hello, World!"}
 
 @app.post("/get-move/")
 async def get_best_move(state: GameState):
