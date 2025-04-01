@@ -32,14 +32,14 @@ async def get_best_move(state: GameState):
     modelState = [line.isClicked for line in lines]
     actions = get_sorted_best_actions(modelState)
     bestMove = next((i for i, q_val in actions if modelState[i] == 0), None)
-    return {"best_move": lines[bestMove].key}
+    return {"best_move": lines[bestMove].key if bestMove != None else None}
 
 def randomUnclickedLine(lines: List[Line]):
     unclicked_line = next((line.key for line in lines if not line.isClicked), None)
     return unclicked_line
 
 model = DQN(input_dim=60, output_dim=60)
-model.load_state_dict(torch.load("model/dots_and_boxes_dqn_model.pth"))
+model.load_state_dict(torch.load("model/dots_and_boxes_dqn_model_final.pth"))
 model.eval()  # Set the model to evaluation mode
 
 def get_sorted_best_actions(state):
