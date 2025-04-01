@@ -5,13 +5,12 @@ export interface PointProps {
   x: number;
   y: number;
 }
-
 export interface LineProps {
   key: string; // 'h-x-y' or 'v-x-y' format where x y from p1
   p1: PointProps;
   p2: PointProps;
   orientation: "horizontal" | "vertical";
-  isClicked?: boolean;
+  isClicked: boolean; // Default value should be false
   clickedBy?: Winner;
   clickedAt?: Date;
 }
@@ -130,24 +129,28 @@ export function getAllBoxes(size: number): Map<string, BoxProps> {
         p1: { key: `${i}-${j}`, x: i, y: j },
         p2: { key: `${i + 1}-${j}`, x: i + 1, y: j },
         orientation: "horizontal",
+        isClicked: false,
       };
       const lineBottom: LineProps = {
         key: `h-${i}-${j + 1}`,
         p1: { key: `${i}-${j + 1}`, x: i, y: j + 1 },
         p2: { key: `${i + 1}-${j + 1}`, x: i + 1, y: j + 1 },
         orientation: "horizontal",
+        isClicked: false,
       };
       const lineLeft: LineProps = {
         key: `v-${i}-${j}`,
         p1: { key: `${i}-${j}`, x: i, y: j },
         p2: { key: `${i}-${j + 1}`, x: i, y: j + 1 },
         orientation: "vertical",
+        isClicked: false,
       };
       const lineRight: LineProps = {
         key: `v-${i + 1}-${j}`,
         p1: { key: `${i + 1}-${j}`, x: i + 1, y: j },
         p2: { key: `${i + 1}-${j + 1}`, x: i + 1, y: j + 1 },
         orientation: "vertical",
+        isClicked: false,
       };
       boxes.set(key, {
         key: key,
@@ -198,7 +201,7 @@ export function serialize(value: any): string {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function deserialize(value: string): any {
   const data = JSON.parse(value);
-  if (!data) return null;
+  if (!data) return data; // could be undefined / null / false
   if (data.__type === "Date") {
     return new Date(data.value);
   } else if (data.__type === "Map") {

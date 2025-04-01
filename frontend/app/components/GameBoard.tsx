@@ -14,7 +14,11 @@ import { useEffect } from "react";
 import Dots from "./Dots";
 import ClickableLines from "./ClickableLines";
 import Boxes from "./Boxes";
-import { computerMoveLevel1, computerMoveLevel2 } from "../game/GameLogic";
+import {
+  computerMoveLevel1,
+  computerMoveLevel2,
+  computerMoveLevel3,
+} from "../game/GameLogic";
 import { Player, Winner } from "./game";
 import useStorage from "../hooks/useStorage";
 import { GameConfig } from "../page";
@@ -107,6 +111,8 @@ export default function GameBoard({
         computerMoveLevel1(boxMap, lineMap, handleLineClick);
       } else if (gameConfig.level === "Level 2") {
         computerMoveLevel2(boxMap, lineMap, handleLineClick);
+      } else if (gameConfig.level === "Level 3") {
+        computerMoveLevel3(lineMap, handleLineClick);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
